@@ -1,6 +1,7 @@
 package day1
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 
@@ -28,18 +29,39 @@ import (
 
 // What is the sum of the fuel requirements for all of the modules on your spacecraft?
 
-func fuelForModule(moduleMass int) int {
-	return int(math.Floor(float64(moduleMass)/3) - 2)
+type Spacecraft struct {
+	Modules []*Module
+}
+
+func (s *Spacecraft) AddModule(m *Module) {
+	s.Modules = append(s.Modules, m)
+}
+
+func (s *Spacecraft) TotalFuelRequired() (fuel int) {
+	for _, m := range s.Modules {
+		fuel += m.FuelRequired()
+	}
+
+	return fuel
+}
+
+type Module struct {
+	Mass int
+}
+
+func (m *Module) FuelRequired() (fuel int) {
+	return int(math.Floor(float64(m.Mass)/3) - 2)
 }
 
 func Run(inputFile string) {
 	data := helpers.ReadFromFile(inputFile)
-	modules := helpers.StringToLines(data)
+	lines := helpers.StringToLines(data)
+	spacecraft := &Spacecraft{}
 
-	totalFuelRequired := 0
-
-	for _, m := range modules {
-		mass, _ := strconv.Atoi(m)
-		totalFuelRequired += fuelForModule(mass)
+	for _, line := range lines {
+		mass, _ := strconv.Atoi(line)
+		spacecraft.AddModule(&Module{Mass: mass})
 	}
+
+	fmt.Println(spacecraft.TotalFuelRequired())
 }
