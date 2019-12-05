@@ -10,17 +10,17 @@ const (
 
 type IntcodeProgram struct {
 	instructions []int
-	index        int
+	ip           int
 	ipOffset     int
 }
 
 func NewIntcodeProgram(instructions []int, ipOffset int) *IntcodeProgram {
-	return &IntcodeProgram{instructions: instructions, index: -(ipOffset), ipOffset: ipOffset}
+	return &IntcodeProgram{instructions: instructions, ip: -(ipOffset), ipOffset: ipOffset}
 }
 
 func (p *IntcodeProgram) nextOpcode() Opcode {
-	p.index += p.ipOffset
-	return Opcode(p.readFromPos(p.index))
+	p.ip += p.ipOffset
+	return Opcode(p.readFromPos(p.ip))
 }
 
 func (p *IntcodeProgram) processInstruction(opcode Opcode) (ended bool) {
@@ -28,9 +28,9 @@ func (p *IntcodeProgram) processInstruction(opcode Opcode) (ended bool) {
 		return true
 	}
 
-	inputA := p.readFromPos(p.readFromPos(p.index + 1))
-	inputB := p.readFromPos(p.readFromPos(p.index + 2))
-	outputIndex := p.readFromPos(p.index + 3)
+	inputA := p.readFromPos(p.readFromPos(p.ip + 1))
+	inputB := p.readFromPos(p.readFromPos(p.ip + 2))
+	outputIndex := p.readFromPos(p.ip + 3)
 
 	switch opcode {
 	case ADD:
