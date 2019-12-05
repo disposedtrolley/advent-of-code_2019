@@ -2,10 +2,11 @@ package day1
 
 import (
 	"fmt"
-	"math"
 	"strconv"
 
 	"github.com/disposedtrolley/advent-of-code_2019/helpers"
+	"github.com/disposedtrolley/advent-of-code_2019/spacecraft"
+	"github.com/disposedtrolley/advent-of-code_2019/spacecraft/module"
 )
 
 // --- Day 1: The Tyranny of the Rocket Equation ---
@@ -41,51 +42,14 @@ import (
 // The fuel required by a module of mass 100756 and its fuel is: 33583 + 11192 + 3728 + 1240 + 411 + 135 + 43 + 12 + 2 = 50346.
 // What is the sum of the fuel requirements for all of the modules on your spacecraft when also taking into account the mass of the added fuel? (Calculate the fuel requirements for each module separately, then add them all up at the end.)
 
-type Spacecraft struct {
-	Modules []*Module
-}
-
-func (s *Spacecraft) AddModule(m *Module) {
-	s.Modules = append(s.Modules, m)
-}
-
-func (s *Spacecraft) TotalFuelRequired() (fuel int) {
-	for _, m := range s.Modules {
-		fuel += m.TotalFuel()
-		fmt.Printf("totalFuel: %d\n", fuel)
-	}
-
-	return fuel
-}
-
-type Module struct {
-	Mass int
-}
-
-func (m *Module) TotalFuel() (fuel int) {
-	fuel = m.fuelForMass(m.Mass)
-
-	fuelForFuel := m.fuelForMass(fuel)
-	for fuelForFuel >= 0 {
-		fuel += fuelForFuel
-		fuelForFuel = m.fuelForMass(fuelForFuel)
-	}
-
-	return fuel
-}
-
-func (m *Module) fuelForMass(mass int) (fuel int) {
-	return int(math.Floor(float64(mass)/3) - 2)
-}
-
 func Run(inputFile string) {
 	data := helpers.ReadFromFile(inputFile)
 	lines := helpers.StringToLines(data)
-	spacecraft := &Spacecraft{}
+	spacecraft := &spacecraft.Spacecraft{}
 
 	for _, line := range lines {
 		mass, _ := strconv.Atoi(line)
-		spacecraft.AddModule(&Module{Mass: mass})
+		spacecraft.AddModule(&module.Module{Mass: mass})
 	}
 
 	fmt.Println(spacecraft.TotalFuelRequired())
