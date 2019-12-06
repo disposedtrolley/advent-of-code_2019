@@ -1,6 +1,7 @@
 package day2
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -72,7 +73,7 @@ import (
 
 // Find the input noun and verb that cause the program to produce the output 19690720. What is 100 * noun + verb? (For example, if noun=12 and verb=2, the answer would be 1202.)
 
-func Run(inputStr string) int {
+func formatInstructions(inputStr string) []int {
 	instructionsStr := strings.Split(inputStr, ",")
 
 	var instructions []int
@@ -81,7 +82,30 @@ func Run(inputStr string) int {
 		instructions = append(instructions, ins)
 	}
 
+	return instructions
+}
+
+func PartOne(inputStr string) int {
 	c := computer.NewComputer(4)
+	instructions := formatInstructions(inputStr)
 	c.LoadProgram(instructions)
 	return c.Execute()
+}
+
+func PartTwo(inputStr string) {
+	c := computer.NewComputer(4)
+
+	for noun := 0; noun <= 99; noun++ {
+		for verb := 0; verb <= 99; verb++ {
+			instructions := formatInstructions(inputStr)
+			instructions[1] = noun
+			instructions[2] = verb
+			c.LoadProgram(instructions)
+			output := c.Execute()
+			if output == 19690720 {
+				fmt.Printf("noun: %d verb: %d\n", noun, verb)
+			}
+
+		}
+	}
 }

@@ -1,8 +1,11 @@
 package day2
 
-import "testing"
+import (
+	"fmt"
+	"testing"
 
-import "github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/assert"
+)
 
 func TestDay2(t *testing.T) {
 	tests := []struct {
@@ -29,7 +32,9 @@ func TestDay2(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.Name, func(t *testing.T) {
-			result := Run(tt.Input)
+			result := PartOne(tt.Input)
+
+			fmt.Println(result)
 
 			assert.Equal(t, tt.ExpectedOutput, result)
 		})
