@@ -81,6 +81,7 @@ func Run(inputStr string) int {
 		instructions = append(instructions, ins)
 	}
 
-	c := computer.NewIntcodeProgram(instructions, 4)
+	c := computer.NewComputer(4)
+	c.LoadProgram(instructions)
 	return c.Execute()
 }
