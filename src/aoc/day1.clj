@@ -15,11 +15,22 @@
                                (slurp (io/resource "day1.txt"))
                                #"\n")))
 
-(defn fuel
-  ([mass]
-   (- (int (/ mass 3)) 2)))
+;; Part One
+(defn fuel [mass]
+  (- (int (/ mass 3)) 2))
 
+;; Part Two
+(defn fuel-2 [mass]
+  (def m (fuel mass))
+  (if (<= m 0)
+    0
+    (+ m (fuel-2 m))))
 
+;; Part One
 (defn total-fuel
   ([]
    (reduce + (map fuel modules))))
+
+;; Part Two
+(defn total-fuel-2 []
+  (reduce + (map fuel-2 modules)))
