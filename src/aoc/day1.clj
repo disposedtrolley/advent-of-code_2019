@@ -11,10 +11,15 @@
 ;; For a mass of 1969, the fuel required is 654.
 ;; For a mass of 100756, the fuel required is 33583.
 
-(def modules (str/split
-              (slurp (io/resource "day1.txt"))
-              #"\n"))
+(def modules (map read-string (str/split
+                               (slurp (io/resource "day1.txt"))
+                               #"\n")))
 
-(defn mass
-  ([module]
-   (- (int (/ module 3)) 2)))
+(defn fuel
+  ([mass]
+   (- (int (/ mass 3)) 2)))
+
+
+(defn totalFuel
+  ([]
+   (reduce + (map fuel modules))))
