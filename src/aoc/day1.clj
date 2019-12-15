@@ -20,6 +20,6 @@
    (- (int (/ mass 3)) 2)))
 
 
-(defn totalFuel
+(defn total-fuel
   ([]
    (reduce + (map fuel modules))))
